@@ -8,13 +8,16 @@
 <body>
     <?php include 'header.php';?>
     <div class="col-12 row tfull justify-content-center" style="padding:20px;">
-        <div class="col-5 my-auto">
+        <div class="col-5 col-md-10 col-lg-5 col-sm-11 col-xl-5 col-xs-11 my-auto my-auto">
             <div class="card">
-                <form method="post" name="login" id="login" action="#">
+                <form method="post" name="signup" id="signup" >
                     <div class="bg-primary card-header">
                         <h2 class=""><i class="fa fa-user"></i> Daftar Baru</h2>
                     </div>
                     <div class="card-body">
+                        <div class="form-group">
+                            <label id="info"></label>
+                        </div>
                         <div class="form-group">
                             <label for="nama">Identitas</label>
                             <div class="input-group">
@@ -25,7 +28,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa fa-university"></i></span>
@@ -58,11 +60,12 @@
                                     <span class="input-group-text" id="basic-addon1"><i class="fa fa-key"></i></span>
                                 </div>
                                 <input type="password" required name="password" id="password" class="form-control required" pattern=".{8,}" title="8 characters minimum" placeholder="Masukan Password">
+                                <input type="text" name="ref_friend" id="ref_friend" class="form-control" pattern=".{6,}" title="8 characters minimum" placeholder="Referal Teman">
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <input type="submit" class="btn btn-primary btn-block" id="login" name="login" value="Login">
+                        <input type="submit" class="btn btn-primary btn-block" id="submit" name="submit" value="Daftar">
                         <p></p>
                         <p class="text-center">Belum punya akun? <a href="#" class="text-primary">Daftar Sekarang</a></p>
                     </div>
@@ -71,4 +74,5 @@
         </div>
     </div>
     <?php include 'footer.php';?>
+    <script src="assets/js/signup.js"></script>
 </body>

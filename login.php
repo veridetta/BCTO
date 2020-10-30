@@ -10,11 +10,14 @@
     <div class="col-12 row tfull justify-content-center" style="padding:20px;">
         <div class="col-5 my-auto">
             <div class="card">
-                <form method="post" name="login" id="login">
+                <form method="post" name="loginform" id="loginform">
                     <div class="bg-primary card-header">
                         <h2 class=""><i class="fa fa-user"></i> Login</h2>
                     </div>
                     <div class="card-body">
+                        <div class="form-group">
+                            <label id="info"></label>
+                        </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <div class="input-group">
@@ -35,7 +38,7 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <input type="submit" class="btn btn-primary btn-block" id="login" name="login" value="Login">
+                        <input type="submit" class="btn btn-primary btn-block" id="submit" name="submit" value="Login">
                         <p></p>
                         <p class="text-center">Belum punya akun? <a href="#" class="text-primary">Daftar Sekarang</a></p>
                     </div>
@@ -44,4 +47,5 @@
         </div>
     </div>
     <?php include 'footer.php';?>
+    <script src="assets/js/login.js"></script>
 </body>

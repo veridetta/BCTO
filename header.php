@@ -52,6 +52,11 @@
   .tfull{
       min-height:100vh;
   }
+    .hidden{display:none;}
+    .kecil{width:50%;};
+    .sedang{width:75%;};
+    .agak-besar{width:80%;};
+
   </style>
 <nav class="navbar navbar-expand-lg navbar-primary bg-primary">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,8 +73,20 @@
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <button class="btn btn-outline-danger my-2 my-sm-0" style="margin-right:6px;">Login</button>
-      <button class="btn btn-outline-warning my-2 my-sm-0">Daftar</button>
+      <?php include 'config/connect.php';
+       session_start();
+       if($_SESSION){
+          ?>
+          <a id="logoutheader" class="btn btn-outline-danger my-2 my-sm-0" style="margin-right:6px;" href="/bcto/logout.php">Logout</a>
+          <?php
+       }else{
+         ?>
+        <button class="btn btn-outline-danger my-2 my-sm-0" style="margin-right:6px;"><a href="/bcto/login.php">Login</a></button>
+        <button class="btn btn-outline-warning my-2 my-sm-0"><a href="signup.php">Daftar</a></button>
+         <?php
+       }
+      ?>
+      
     </form>
   </div>
 </nav>
