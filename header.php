@@ -53,9 +53,7 @@
       min-height:100vh;
   }
     .hidden{display:none;}
-    .kecil{width:50%;};
-    .sedang{width:75%;};
-    .agak-besar{width:80%;};
+
 
   </style>
 <nav class="navbar navbar-expand-lg navbar-primary bg-primary">

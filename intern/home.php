@@ -7,11 +7,15 @@
 </head>
 <body style="background-color:#f8f8f8">
 <?php include '../header.php';?>
+
 <?php 
 if($_SESSION['role']=='admin'){
     $nama=$_SESSION['nama'];
     $ref=$_SESSION['ref'];
     $role=$_SESSION['role'];
+    $mensu = isset($_GET['menu']) ? $_GET['menu'] : "kosong";
+    $sesi = isset($_GET['sesi']) ? $_GET['sesi'] : "kosong";
+    $paket = isset($_GET['paket']) ? $_GET['paket'] : "kosong";
 }else{
     header('location:../intern/login.php');
 }?>
@@ -20,7 +24,7 @@ if($_SESSION['role']=='admin'){
     <!--<script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
     <script src="../assets/javascripts/ckeditor/ckeditor.js"></script>
     <script src="../assets/javascripts/ckeditor/config.js"></script>-->
-    <script src="../assets/js/tinymce/tinymce.min.js"></script>-->
+    <script src="../assets/js/tinymce/tinymce.min.js"></script>
     <div class="d-flex" id="wrapper">
         <?php include 'sidebar.php';?>
         <!-- Page Content -->
@@ -37,10 +41,9 @@ if($_SESSION['role']=='admin'){
                     </li>
                 </ul>
                 </div>
+                <input type="hidden" value="<?php echo $mensu;?>" id="tipemenu" sesi="<?php echo $sesi;?>" paket="<?php echo $paket;?>">
             </nav>
-            <textarea id="mytextarea" name="mytextarea">
-            Hello, World!
-            </textarea>
+            
             <div class="container-fluid" id="content-disini" style="padding-top:20px;">
             </div>
         </div>
@@ -56,60 +59,20 @@ if($_SESSION['role']=='admin'){
     </script>
     <script type="text/javascript" language="javascript">
         $(document).ready(function() { /// Wait till page is loaded
-            tinymce.init({
-                selector: '#mytextarea',
-                images_upload_url: 'upload_img.php',
-                setup: function (editor) {
-                    editor.on('change', function () {
-                        editor.save();
-                    });
-                },
-                paste_data_images: true,
-                plugins: [
-                "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-                "searchreplace wordcount visualblocks visualchars code fullscreen",
-                "insertdatetime media nonbreaking save table contextmenu directionality image",
-                "emoticons template paste textcolor colorpicker textpattern template"
-                ],
-                toolbar1: "insertfile undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent ",
-                toolbar2: "template | link image | print preview media | forecolor backcolor emoticons | fontsizeselect | tiny_mce_wiris_formulaEditor tiny_mce_wiris_formulaEditorChemistry tiny_mce_wiris_CAS" ,
-                fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
-                image_class_list: [
-                {title: 'None', value: ''},
-                {title: 'Full', value: 'img-fluid'},
-                {title: 'Kecil', value: 'kecil'},
-                {title: 'Sedang', value: 'sedang'},
-                {title: 'Agak Besar', value: 'agak-besar'}
-                ],
-                image_advtab: true,
-                file_picker_callback: function(callback, value, meta) {
-                if (meta.filetype == 'image') {
-                    $('#upload').trigger('click');
-                    $('#upload').on('change', function() {
-                    var file = this.files[0];
-                    var reader = new FileReader();
-                    reader.onload = function(e) {
-                        callback(e.target.result, {
-                        alt: ''
-                        });
-                    };
-                    reader.readAsDataURL(file);
-                    });
-                }
-                },
-               
-                templates: [{
-                title: 'Test template 1',
-                content: 'Test 1'
-                }, {
-                title: 'Test template 2',
-                content: 'Test 2'
-                }]
-            });
-           
-            $('#content-disini').load('dashboard.php', function() {
+            var getx=$("#tipemenu").val();
+            if (getx==="kosong") {
+                //$('#content-disini').load('dashboard.php', function() {
+                  
+                //});   
+            }else{
+                var get2=$("#tipemenu").val();
+                var sesi = $("#tipemenu").attr('sesi');
+                var paket = $("#tipemenu").attr('paket');
+                $('#content-disini').load(get2+'.php?sesi='+sesi+'&&paket='+paket, function() {
                     /// can add another function here
+                    $.getScript("../assets/js/"+get2+".js");
                 });
+            }
             $('.list-group-item-action').click(function(e){
                 e.preventDefault();
                 var href = $(this).attr('href');
@@ -118,6 +81,7 @@ if($_SESSION['role']=='admin'){
                     $.getScript("../assets/js/"+href+".js");
                 });
             });
+            
         }); //// End of Wait till page is loaded
     </script>
     <?php include '../footer.php';?>

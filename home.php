@@ -34,19 +34,52 @@ if($_SESSION){
             <p class="h4 text-warning"><i class="fa fa-calendar"></i> Event Terbaru</p>
             <hr>
             <div class="col-12 row">
+            <?php 
+                //status user :
+                //0 === tidak terdaftar
+                //1 === belum mengerjakan
+                //2 === sudah mengerjakan
+                //status soal
+                //0 === idle
+                //1 === siap
+                //2 === mulai
+                //3 === stop/masa lalu
+                //4 === sesi pembahasan
+                $qu=mysqli_query($con, "select * from paket_soal where status <3");
+                while($query=mysqli_fetch_array($qu)){
+                    $nama=$query['nama'];
+                    $kategori=$query['kategori'];
+                    $keterangan=$query['keterangan'];
+                    $status=$query['status'];
+                    $tgl_mulai="2";
+                    $tgl_selesai="3";
+            ?>
                 <div class="col-3">
                     <div class="card">
                         <div class="card-header">
-                            <p class="card-title">To UTBK 1</p>
+                            <p class="card-title h4 text-center"><?php echo $nama;?></p>
                         </div>
                         <div class="card-body">
-                            <p>20 Oktober 2020</p>
+                            <p class="display-1 text-center"><i class="fa fa-file-o"></i></p>
+                            <p class="text-center font-weight-bold" style="margin-bottom:0px;"><?php echo $kategori;?></p>
+                            <p class="text-center" style="margin-bottom:0px;"><?php echo $keterangan;?></p>
+                            <p class="text-center" style="margin-bottom:0px;"><?php echo $tgl_mulai." - ".$tgl_selesai;?></p>
                         </div>
                         <div class="card-footer">
-                            <button class="btn button btn-success btn-block">Daftar Sekarang</button>
+                            <?php 
+                            if($status===2){
+                            ?>
+                            <button class="btn button btn-success btn-block">Mulai Mengerjakan</button>
+                            <?php    
+                            }
+                            ?>
+                            <button class="btn button btn-primary btn-block">Daftar (98 <i class="text-warning fa fa-star"></i>)</button>
                         </div>
                     </div>
                 </div>
+            <?php
+            };
+            ?>
             </div>
         </div>
         <div class="col-12" style="background-color:white;padding:20px;margin-top:12px;">
