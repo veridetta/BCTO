@@ -10,7 +10,18 @@
 <?php 
 if($_SESSION){
     $nama=$_SESSION['nama'];
+    $id=$_SESSION['id'];
     $ref=$_SESSION['ref'];
+    //status riwayat
+    //1 topup
+    //2 pembelian
+    $sa=mysqli_query($con, "select * from riwayat_bintang where id_users='$id' order by id desc limit 1");
+    $sal=mysqli_fetch_assoc($sa);
+    $hitung=mysqli_num_rows($sa);
+    $saldo=$sal['saldo'];
+    if($hitung<1){
+        $saldo=0;
+    }
 }else{
     header('location:/bcto/index.php');
 }?>
@@ -25,7 +36,7 @@ if($_SESSION){
                 <p class="h6">Code Referal : <?php echo $ref;?></p>
             </div>
             <div class="col-6 text-right">
-                <span class="h4 text-right"><i class="text-warning fa fa-star"></i> 300</span>
+                <span class="h4 text-right"><i class="text-warning fa fa-star"></i> <?php echo $saldo;?></span>
                 <button class="btn btn-outline-warning h4">Tambah</button>
             </div>
             <hr>
@@ -34,11 +45,17 @@ if($_SESSION){
             <p class="h4 text-warning"><i class="fa fa-calendar"></i> Event Terbaru</p>
             <hr>
             <div class="col-12 row">
+            <form method="post" id="form_buy" name="form_buy">
+                <input type="hidden" name="id_paket_soal" id="id_paket_soal" value="">
+                <input type="hidden" name="id_user" id="id_user" value="<?php echo $id;?>">
+                <input type="submit" name="sb_buy" id="sb_buy" style="display:none;" value="ada">
+            </form>
             <?php 
                 //status user :
                 //0 === tidak terdaftar
                 //1 === belum mengerjakan
-                //2 === sudah mengerjakan
+                //2 === sedang mengerjakan
+                //3 === sudah
                 //status soal
                 //0 === idle
                 //1 === siap
@@ -51,8 +68,16 @@ if($_SESSION){
                     $kategori=$query['kategori'];
                     $keterangan=$query['keterangan'];
                     $status=$query['status'];
+                    $id_paket=$query['id'];
                     $tgl_mulai="2";
                     $tgl_selesai="3";
+                    $us=mysqli_query($con, "select * from peserta_paket where id_paket='$id_paket' and id_user='$id' LIMIT 1");
+                    $userx=mysqli_fetch_assoc($us);
+                    $us_status=$userx['status'];
+                    if($us_status===""){
+                        $us_status=0;
+                    }
+
             ?>
                 <div class="col-3">
                     <div class="card">
@@ -67,13 +92,20 @@ if($_SESSION){
                         </div>
                         <div class="card-footer">
                             <?php 
-                            if($status===2){
+                            if($status==1 and $us_status==1){
                             ?>
                             <button class="btn button btn-success btn-block">Mulai Mengerjakan</button>
                             <?php    
+                            }else if($us_status==0){ 
+                                ?>
+                                <button class="btn button btn-primary btn-block btn-buy" id="btn-buy<?php echo $id_paket;?>" paket="<?php echo $id_paket;?>">Daftar (98 <i class="text-warning fa fa-star"></i>)</button>
+                                <?php
+                            }else {
+                                ?>
+                                <button class="btn button btn-disabled btn-block">Sudah Terdaftar</button>
+                                <?php
                             }
                             ?>
-                            <button class="btn button btn-primary btn-block">Daftar (98 <i class="text-warning fa fa-star"></i>)</button>
                         </div>
                     </div>
                 </div>
@@ -116,5 +148,62 @@ if($_SESSION){
         </div>
     </div>
     <?php include 'footer.php';?>
+   <!-- The Modal -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" id="judul">Modal Heading</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <span id="pesan"></span>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+    <script>
+    $(".btn-buy").click(function(e){
+        var vale = $(this).attr("paket");
+        $("#id_paket_soal").val(vale);
+        $("#sb_buy").trigger("click");
+    })
+    $('#form_buy').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+        url: 'action/buy.php',
+        type: 'POST',
+            data: $(this).serialize(),
+            dataType: "json"
+            })
+        .done(function(data){
+            if(data.success) {
+                $('#myModal').modal('show'); 
+                setTimeout(function() {
+                    window.location.replace("home.php");
+                }, 1500);
+            } else {
+                //info.html(data.pesan).css('color', 'red').slideDown();
+                $('#myModal').modal('show'); 
+            }
+            $("#judul").html(data.judul);
+            $("#pesan").html(data.pesan);
+        })
+        .fail(function(){
+            alert('Maaf, submit gagal..');
+        });
+    });
+
+    </script>
 </body>
 </html>

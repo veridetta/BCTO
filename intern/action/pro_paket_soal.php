@@ -1,5 +1,6 @@
 <?php
 if($_POST){
+    header('Content-Type: application/json');
     $return_arr= array(
         "id" => '',
         "pesan" => '',

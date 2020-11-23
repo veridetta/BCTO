@@ -1,6 +1,7 @@
 <?php
 if($_POST){
     include '../../config/connect.php';
+    header('Content-Type: application/json');
     $return_arr= array(
         "id" => '',
         "pesan" => '',

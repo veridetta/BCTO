@@ -61,9 +61,9 @@ if($_SESSION['role']=='admin'){
         $(document).ready(function() { /// Wait till page is loaded
             var getx=$("#tipemenu").val();
             if (getx==="kosong") {
-                //$('#content-disini').load('dashboard.php', function() {
+                $('#content-disini').load('dashboard.php', function() {
                   
-                //});   
+                });   
             }else{
                 var get2=$("#tipemenu").val();
                 var sesi = $("#tipemenu").attr('sesi');

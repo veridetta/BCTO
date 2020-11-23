@@ -4,10 +4,12 @@
     $paket= $_GET['paket'];
     $qu=mysqli_query($con,"select * from soal where id_paket_soal='$paket' and id_sesi_soal='$sesi' order by id");
     $que=mysqli_query($con,"select * from soal where id_paket_soal='$paket' and id_sesi_soal='$sesi' order by id");
+    $da=mysqli_query($con,"select * from sesi_soal where id='$sesi'");
+    $dat=mysqli_fetch_assoc($da);
 ?>
 <div class="card">
     <div class="card-header">
-        <p class="h4"><small><a href="home.php?menu=soal" class="text-primary"><i class="fa fa-arrow-left"></i></a></small>Penalaran Umum</p>
+        <p class="h4"><small><a href="home.php?menu=soal" class="text-primary"><i class="fa fa-arrow-left"></i></a></small><?php echo $dat['nama_sesi'];?></p>
     </div>
     <div class="card-body">
         <div class="col-12 row row-imbang" data-toggle="collapse" href="#collapse1">
@@ -25,14 +27,15 @@
                 }
                 ?>
             </div>
+            <div class="col-6">
             <?php
                 $noz=0;
                 while($data2=mysqli_fetch_array($que)){
                     $noz++;
-                    if($noz<11){
+                    if($noz>10){
             ?>
-                <p class="h7">Nomor <?php echo $noz;?> &nbsp;&nbsp;&nbsp;<button class="button btn btn-success"><span class="text-uppercase"><?php echo $data2['kunci'];?></span></button>
-                <button class="button btn btn-secondary" style="margin-right:3px;"><i class="fa fa-edit"></i></button></p>
+                <p class="h7">Nomor <?php echo $no;?> &nbsp;&nbsp;&nbsp;<button class="button btn btn-success"><span class="text-uppercase"><?php echo $data2['kunci'];?></span></button>
+                <button class="button btn btn-secondary edit-soal" sesi="<?php echo $_GET['sesi'];?>" paket="<?php echo $_GET['paket'];?>" id-nomor="<?php echo $data2['id'];?>" style="margin-right:3px;" href="soal"><i class="fa fa-edit"></i></button></p>
                 <?php 
                     }
                 }

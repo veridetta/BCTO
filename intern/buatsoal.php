@@ -1,18 +1,18 @@
 <?php
     include '../config/connect.php';
-    $isi="Masukan soal";
-    $pembahasan="Masukan pembahasan";
-    $kunci="Masukan kunci";
-    $a="Opsi A";
-    $b="Opsi B";
-    $c="Opsi C";
-    $d="Opsi D";
-    $e="Opsi E";
+    
     $ssoal = isset($_GET['soal']) ? $_GET['soal'] : '';
     if($ssoal==""){
-        
+        $isi="Masukan soal";
+        $pembahasan="Masukan pembahasan";
+        $kunci="Masukan kunci";
+        $a="Opsi A";
+        $b="Opsi B";
+        $c="Opsi C";
+        $d="Opsi D";
+        $e="Opsi E";
     }else{
-        $qu=mysqli_query($con, "select * from soal where id='$_GET[soal]'");
+        $qu=mysqli_query($con, "select * from soal where id='$_GET[soal]' LIMIT 1");
         while($query=mysqli_fetch_assoc($qu)){
             $isi=$query['isi'];
             $pembahasan=$query['pembahasan'];
@@ -25,6 +25,15 @@
         }
     }
 ?>
+<div id="content" style="display:none";?>
+    <div id="iso"><?php echo $isi;?></div>
+    <div id="o-a"><?php echo $a;?></div>
+    <div id="o-b"><?php echo $b;?></div>
+    <div id="o-c"><?php echo $c;?></div>
+    <div id="o-d"><?php echo $d;?></div>
+    <div id="o-e"><?php echo $e;?></div>
+    <div id="c-pembahasan"><?php echo $pembahasan;?></div>
+</div>
 <div class="card">
     <div class="card-header">
         <p class="h4"><small><a href="home.php?menu=sesi&&sesi=<?php echo $_GET['sesi'];?>&&paket=<?php echo $_GET['paket'];?>" class="text-primary"><i class="fa fa-arrow-left"></i></a></small>Tambah Soal</p>
@@ -38,7 +47,7 @@
                         <input type="hidden" name="soal_id" id="soal_id" value="<?php echo $_GET['sesi'];?>">
                         <div class="form-group">
                             <div class="input-group">
-                                <textarea id="inputan" class="inputan form-control" name="isi" style="min-height:50vh;">Soal</textarea>
+                                <textarea id="inputan" class="inputan form-control" name="isi" style="min-height:50vh;">Siapa</textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -107,7 +116,7 @@ $(document).ready(function() { /// Wait till page is loaded
                 min_height: 500,
                 setup: function (editor) {
                     editor.on('init', function (e) {
-                        editor.setContent('<?php echo $isi;?>');
+                        editor.setContent($('#iso').html());
                     });
                     editor.on('change', function () {
                         editor.save();
@@ -161,7 +170,7 @@ $(document).ready(function() { /// Wait till page is loaded
                 min_height: 200,
                 setup: function (editor) {
                     editor.on('init', function (e) {
-                        editor.setContent('<?php echo $a;?>');
+                        editor.setContent($('#o-a').html());
                     });
                     editor.on('change', function () {
                         editor.save();
@@ -215,7 +224,7 @@ $(document).ready(function() { /// Wait till page is loaded
                 min_height: 200,
                 setup: function (editor) {
                     editor.on('init', function (e) {
-                        editor.setContent('<?php echo $b;?>');
+                        editor.setContent($('#o-b').html());
                     });
                     editor.on('change', function () {
                         editor.save();
@@ -269,7 +278,7 @@ $(document).ready(function() { /// Wait till page is loaded
                 min_height: 200,
                 setup: function (editor) {
                     editor.on('init', function (e) {
-                        editor.setContent('<?php echo $c;?>');
+                        editor.setContent($('#o-c').html());
                     });
                     editor.on('change', function () {
                         editor.save();
@@ -323,7 +332,7 @@ $(document).ready(function() { /// Wait till page is loaded
                 min_height: 200,
                 setup: function (editor) {
                     editor.on('init', function (e) {
-                        editor.setContent('<?php echo $d;?>');
+                        editor.setContent($('#o-d').html());
                     });
                     editor.on('change', function () {
                         editor.save();
@@ -377,7 +386,7 @@ $(document).ready(function() { /// Wait till page is loaded
                 min_height: 200,
                 setup: function (editor) {
                     editor.on('init', function (e) {
-                        editor.setContent('<?php echo $e;?>');
+                        editor.setContent($('#o-e').html());
                     });
                     editor.on('change', function () {
                         editor.save();
@@ -431,7 +440,7 @@ $(document).ready(function() { /// Wait till page is loaded
                 min_height: 500,
                 setup: function (editor) {
                     editor.on('init', function (e) {
-                        editor.setContent('<?php echo $pembahasan;?>');
+                        editor.setContent($('#c-pembahasan').html());
                     });
                     editor.on('change', function () {
                         editor.save();
