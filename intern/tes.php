@@ -1,5 +1,5 @@
 <form method="post" action="action/pro_edit_paket.php" name="buatsoal" id="buatsoal">
-                    <input type="hidden" name="id" id="id" value="1">
+                    <input type="hidden" name="ide" id="ide" value="1">
                     <div class="form-group">
                         <div class="input-group">
                             <input type="number" name="harga" id="harga" class="form-control required" placeholder="Harga">
@@ -11,11 +11,11 @@
                     <div class="form-group">
                         <div class="input-group">
                             <select name="kategori" class="form-control" id="kategori">
-                                <option>Idle</option>
-                                <option>Terjadwal</option>
-                                <option>Dimulai</option>
-                                <option>Selesai</option>
-                                <option>Pembahasan</option>
+                                <option value="0">Idle</option>
+                                <option value="1">Terjadwal</option>
+                                <option value="2">Dimulai</option>
+                                <option value="3">Selesai</option>
+                                <option value="4">Pembahasan</option>
                             </select>
                         </div>
                     </div>

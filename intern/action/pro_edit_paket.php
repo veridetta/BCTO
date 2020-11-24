@@ -13,8 +13,6 @@ if($_POST){
         "pesan" => '',
         "success" => false);
         $qu=mysqli_query($con, "update paket_soal set status='$status', bintang='$bintang', tgl_mulai='$mulai', tgl_selesai='$akhir', keterangan='$keterangan' where id='$paket_id'");
-        //print_r($_POST);
-        echo mysqli_error($con);
         if($qu){
             $pesan = "Berhasil, Soal berhasil dibuat";
             $return_arr['pesan']=$pesan;

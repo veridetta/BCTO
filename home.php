@@ -45,7 +45,7 @@ if($_SESSION){
             <p class="h4 text-warning"><i class="fa fa-calendar"></i> Event Terbaru</p>
             <hr>
             <div class="col-12 row">
-            <form method="post" id="form_buy" name="form_buy">
+            <form method="post"  id="form_buy" name="form_buy">
                 <input type="hidden" name="id_paket_soal" id="id_paket_soal" value="">
                 <input type="hidden" name="id_user" id="id_user" value="<?php echo $id;?>">
                 <input type="submit" name="sb_buy" id="sb_buy" style="display:none;" value="ada">
@@ -94,7 +94,9 @@ if($_SESSION){
                             <?php 
                             if($status==1 and $us_status==1){
                             ?>
-                            <button class="btn button btn-success btn-block">Mulai Mengerjakan</button>
+                            <form method="post" action="start/launch.php">
+                                <button class="btn button btn-success btn-block">Mulai Mengerjakan</button>
+                            </form>
                             <?php    
                             }else if($us_status==0){ 
                                 ?>
