@@ -7,6 +7,20 @@
 </head>
 <body style="background-color:#f8f8f8">
 <?php include '../header.php';?>
+<style>
+#message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+#inner-message {
+    margin: 0 auto;
+}
+.hilang{
+    display: none;
+}
+</style>
 <?php 
 $gagal=0;
 if($_SESSION){
@@ -84,61 +98,140 @@ $nomor_sesi=mysqli_num_rows($us);
 //select sesi aktif
 $ses=mysqli_query($con, "select * from sesi_soal where id='$user[id_soal]'");
 $sesi=mysqli_fetch_assoc($ses);
-$soa=mysqli_query($con, "select j.id_paket, j.id_sesi, j.nomor_soal, s.isi, s.id, s.a, s.b, s.c, s.d, s.e from user_jawaban j inner join soal s on s.id=j.id_soal where j.id_sesi='$user[id_soal]' and j.nomor_soal='1' and j.id_siswa='$id'");
-$soale=mysqli_fetch_assoc($soa);
+
 ?>
 <div class="sticky-top" style="margin:20px 12px;">
-    <div id=""><span class="bg-primary border border-warning text-white" id="timer" style="padding:10px 20px;"></span><span class="bg-primary border border-warning text-white" id="timer" style="padding:10px 20px;margin-left:12px;"><?php echo $soale['nomor_soal'];?></span></div>
+    <div id=""><button class="btn btn-info"><span class="spinner-grow spinner-grow-sm"></span>&nbsp;&nbsp;&nbsp;<span  id="timer"></span></button><button class="btn btn-info" id="nomor_soal" data-toggle="modal" data-target="#myModal" style="margin-left:12px;"></button></div>
 </div>
 <div class="col-12 row row-imbang primary" style="margin-top:60px;margin-bottom:60px;">
     <div id="soal" name="soal" class="col-12">
-        <p class="h4"><?php echo $sesi['nama_sesi'];?></p>
-        <p>Soal Nomor <?php echo $soale['nomor_soal'];?></p>
-        <div class="col-12" id="isi-soal" name="isi-soal">
-            <?php echo $soale['isi'];?>
-        </div>
-        <div class="col-12" id="opsi-soal" name="opsi-soal">
-        <fieldset class="form-group">
-            <div class="row">
-                <div class="col-sm-10">
-                <?php 
-                $aj=array("A","B","C","D","E");
-                $opsi=array($soale['a'],$soale['b'],$soale['c'],$soale['d'],$soale['e']);
-                for($i=0;$i<5;$i++){
-                    ?>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="opsi" id="opsi_<?php echo $aj[$i];?>" value="<?php echo $aj[$i];?>">
-                        <label class="form-check-label" for="opsi_<?php echo $aj[$i];?>">
-                            <?php echo $opsi[$i];?>
-                        </label>
-                    </div>
-                    <?php
-                    }?>
-                </div>
-            </div>
-        </fieldset>
-        </div>
+        
     </div>
     <div id="footer" class="col-12 row justify-content-end">
-        <button style="margin-right:12px;" class="btn btn-secondary">Sebelumnya</button><button class="btn btn-primary">Berikutnya</button>
+        <button style="margin-right:12px;" id="sebelumnya" class="btn btn-secondary">Sebelumnya</button><button class="btn btn-primary" id="berikutnya">Berikutnya</button>
     </div>
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Nomor Soal</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="col-12 row" id="panel-control">
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="message">
+        <div style="padding: 5px;">
+            <div class="alert alert-danger" role="alert">
+                Waktu sudah habis, kamu akan dialhikan dalam 3 detik.
+            </div>
+        </div>
+    </div>
+    <?php
+    //total soal
+    $t_s=mysqli_query($con, "select * from soal where id_sesi_soal='$sesi[id]'");
+    $a_soal=1;
+    $t_soal=mysqli_num_rows($t_s);
+    ?>
     <script>
         $(document).ready(function(){
+            var soalke="<?php echo $a_soal;?>";
+            var totalSoal="<?php echo $t_soal;?>";
+            /* --TIMER OLD
             var timer2 = "<?php echo $total_sisa;?>";
             var interval = setInterval(function() {
-            var timer = timer2.split(':');
-            //by parsing integer, I avoid all extra string processing
-            var minutes = parseInt(timer[0], 10);
-            var seconds = parseInt(timer[1], 10);
-            --seconds;
-            minutes = (seconds < 0) ? --minutes : minutes;
-            if (minutes < 0) clearInterval(interval);
-            seconds = (seconds < 0) ? 59 : seconds;
-            seconds = (seconds < 10) ? '0' + seconds : seconds;
-            //minutes = (minutes < 10) ?  minutes : minutes;
-            $('#timer').html(minutes + ':' + seconds);
-            timer2 = minutes + ':' + seconds;
+                var timer = timer2.split(':');
+                //by parsing integer, I avoid all extra string processing
+                var minutes = parseInt(timer[0], 10);
+                var seconds = parseInt(timer[1], 10);
+                --seconds;
+                minutes = (seconds < 0) ? --minutes : minutes;
+                if (minutes < 0){
+                    clearInterval(interval);
+                    alert('expired');
+                };
+                seconds = (seconds < 0) ? 59 : seconds;
+                seconds = (seconds < 10) ? '0' + seconds : seconds;
+                //minutes = (minutes < 10) ?  minutes : minutes;
+                //$('#timer').html(minutes + ':' + seconds);
+                timer2 = minutes + ':' + seconds;
             }, 1000);
+            */
+            var countDownDate = new Date("<?php echo $akhir_ujian;?>").getTime();
+            // Update the count down every 1 second
+            var x = setInterval(function() {
+            // Get today's date and time
+            var now = new Date().getTime();
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Display the result in the element with id="demo"
+            document.getElementById("timer").innerHTML = minutes + " : " + seconds;
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                $("#message").toggleClass('sembunyi');
+                setTimeout(function(){window.location.replace("launch.php"); }, 3000);
+                
+            }
+            }, 1000);
+            //getjawaban
+            $.get( "action/nav.php?id_siswa=<?php echo $id;?>&&id_sesi=<?php echo $sesi['id'];?>&&nama=<?php echo $sesi['nama_sesi'];?>", function( data ) {
+                $( "#panel-control" ).html( data );
+            });
+            //getsoal
+            $.get( "action/soal.php?idSesi=<?php echo $sesi['id'];?>&&nomor="+soalke+"&&nama=<?php echo $sesi['nama_sesi'];?>", function( data ) {
+                $( "#soal" ).html( data );
+                $("#nomor_soal").html(soalke);
+            });
+            $("#berikutnya").click(function(){
+                if(soalke>totalSoal){
+                   alert('finish');
+                }else if(soalke<=totalSoal){
+                    if(soalke==totalSoal-1){
+                        $(this).html('Selesai');
+                    }
+                    soalke++;
+                    //getsoal
+                    $.get( "action/soal.php?idSesi=<?php echo $sesi['id'];?>&&nomor="+soalke+"&&nama=<?php echo $sesi['nama_sesi'];?>", function( data ) {
+                        $( "#soal" ).html( data );
+                        $("#nomor_soal").html(soalke);
+                    });
+                }
+            });
+            $("#sebelumnya").prop('disabled', true);
+            $("#sebelumnya").click(function(){
+                if(soalke==0){
+                    $(this).prop('disabled', true);
+                }else{
+                    soalke--;
+                    //getsoal
+                    $.get( "action/soal.php?idSesi=<?php echo $sesi['id'];?>&&nomor="+soalke+"&&nama=<?php echo $sesi['nama_sesi'];?>", function( data ) {
+                        $( "#soal" ).html( data );
+                        $("#nomor_soal").html(soalke);
+                    });
+                }
+            })
+            //panel control
         })
     </script>
 </div>

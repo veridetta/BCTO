@@ -63,6 +63,14 @@ if($_SESSION){
                 //3 === stop/masa lalu
                 //4 === sesi pembahasan
                 $qu=mysqli_query($con, "select * from paket_soal where status <3");
+                $hit=mysqli_num_rows($qu);
+                if($hit<1){
+                    ?>
+                    <div class="col-12 row" style="min-height:30px;">
+                        <p class="h4 text-muted">Belum ada event terbaru</p>
+                    </div>
+                    <?php
+                }
                 while($query=mysqli_fetch_array($qu)){
                     $nama=$query['nama'];
                     $kategori=$query['kategori'];
@@ -120,32 +128,70 @@ if($_SESSION){
             <p class="h4 text-secondary"><i class="fa fa-history"></i> Event Terakhir</p>
             <hr>
             <div class="col-12 row">
+            <?php 
+                //status user :
+                //0 === tidak terdaftar
+                //1 === belum mengerjakan
+                //2 === sedang mengerjakan
+                //3 === sudah
+                //status soal
+                //0 === idle
+                //1 === siap
+                //2 === mulai
+                //3 === stop/masa lalu
+                //4 === sesi pembahasan
+                $qu2=mysqli_query($con, "select * from paket_soal where status >2");
+                while($query2=mysqli_fetch_array($qu2)){
+                    $nama2=$query2['nama'];
+                    $kategori2=$query2['kategori'];
+                    $keterangan2=$query2['keterangan'];
+                    $status2=$query2['status'];
+                    $id_paket2=$query2['id'];
+                    $tgl_mulai2="2";
+                    $tgl_selesai2="3";
+                    $us2=mysqli_query($con, "select * from peserta_paket where id_paket='$id_paket2' and id_user='$id' LIMIT 1");
+                    $userx2=mysqli_fetch_assoc($us2);
+                    $us_status2=$userx2['status'];
+                    if($us_status2===""){
+                        $us_status2=0;
+                    }
+
+            ?>
                 <div class="col-3">
                     <div class="card">
                         <div class="card-header">
-                            <p class="card-title text-secondary">To UTBK 1</p>
+                            <p class="card-title h4 text-center"><?php echo $nama2;?></p>
                         </div>
                         <div class="card-body">
-                            <p class="text-secondary">20 Oktober 2020</p>
+                            <p class="display-1 text-center"><i class="fa fa-file-o"></i></p>
+                            <p class="text-center font-weight-bold" style="margin-bottom:0px;"><?php echo $kategori2;?></p>
+                            <p class="text-center" style="margin-bottom:0px;"><?php echo $keterangan2;?></p>
+                            <p class="text-center" style="margin-bottom:0px;"><?php echo $tgl_mulai2." - ".$tgl_selesai2;?></p>
                         </div>
                         <div class="card-footer">
-                            <button class="btn button btn-primary btn-block">Pembahasan</button>
+                            <?php 
+                            if($status2==4 and $us_status2==3){
+                            ?>
+                            <form method="post" action="start/launch.php">
+                                <button class="btn button btn-primary btn-block">Lihat Pembahasan</button>
+                            </form>
+                            <?php    
+                            }else if($status2==3 and $us_status2==3){ 
+                                ?>
+                                <button class="btn button btn-disabled btn-block">Menunggu Pembahasan</button>
+                                <?php
+                            }else {
+                                ?>
+                                <button class="btn button btn-disabled btn-block">Tidak Terdaftar</button>
+                                <?php
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
-                    <div class="card">
-                        <div class="card-header">
-                            <p class="card-title text-secondary">To UTBK 1</p>
-                        </div>
-                        <div class="card-body">
-                            <p class="text-secondary">20 Oktober 2020</p>
-                        </div>
-                        <div class="card-footer">
-                            <button class="btn button btn-muted btn-block" disabled>Kamu tidak mengikuti event ini</button>
-                        </div>
-                    </div>
-                </div>
+            <?php
+            };
+            ?>
             </div>
         </div>
     </div>
