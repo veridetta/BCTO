@@ -172,7 +172,9 @@ if($_SESSION){
                             <?php 
                             if($status2==4 and $us_status2==3){
                             ?>
-                            <form method="post" action="start/launch.php">
+                            <form method="post" action="pembahasan.php">
+                                <input type="hidden" name="id" value="<?php echo $id;?>">
+                                <input type="hidden" name="id_paket" value="<?php echo $id_paket2;?>">
                                 <button class="btn button btn-primary btn-block">Lihat Pembahasan</button>
                             </form>
                             <?php    

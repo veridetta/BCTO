@@ -8,10 +8,52 @@ if($_POST){
     $mulai=mysqli_real_escape_string($con,$_POST['mulai']);
     $akhir=mysqli_real_escape_string($con,$_POST['akhir']);
     $keterangan=mysqli_real_escape_string($con,$_POST['keterangan']);
+    function score($b,$s){
+        $score=($b!=0)?($b/($b+$s))*100:0;
+        $niali=0;
+        if($score!=0){
+            if($score<76){
+                if($score<51){
+                    if($score<21){
+                        $nilai=10;
+                    }else{
+                        $nilai=7;        
+                    }
+                }else{
+                    $nilai=5; 
+                }
+            }else{
+                $nilai=2;
+            }
+        }else{
+            $nilai=0;
+        }
+        return $nilai;
+    }
     $return_arr= array(
         "id" => '',
         "pesan" => '',
         "success" => false);
+        if($status==4){
+            $se=mysqli_query($con, "Select * from sesi_soal where id_paket_soal='$paket_id'");
+            while($sesi=mysqli_fetch_array($se)){
+                $no=mysqli_query($con, "select * from soal where id_sesi_soal='$sesi[id]'");
+                while($nomor=mysqli_fetch_array($no)){
+                    $jawa=mysqli_query($con, "select * from user_jawaban where id_soal='$nomor[id]'");
+                    $benar=0;
+                    $salah=0;
+                    while($jawaban=mysqli_fetch_array($jawa)){
+                        if($jawaban['jawabanSiswa']==$jawaban['kunci']){
+                            $benar++;
+                        }else{
+                            $salah++;
+                        }
+                    } 
+                    $skoring=score($benar,$salah);
+                    $in=mysqli_query($con, "UPDATE soal set score='$skoring' where id='$nomor[id]'");
+                }
+            }
+        }
         $qu=mysqli_query($con, "update paket_soal set status='$status', bintang='$bintang', tgl_mulai='$mulai', tgl_selesai='$akhir', keterangan='$keterangan' where id='$paket_id'");
         if($qu){
             $pesan = "Berhasil, Soal berhasil dibuat";
