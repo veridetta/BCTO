@@ -100,7 +100,7 @@ if($_SESSION){
                         </div>
                         <div class="card-footer">
                             <?php 
-                            if($status==1 and $us_status==1){
+                            if($status==2 and $us_status==1){
                             ?>
                             <form method="post" action="start/launch.php">
                                 <button class="btn button btn-success btn-block">Mulai Mengerjakan</button>
@@ -170,15 +170,15 @@ if($_SESSION){
                         </div>
                         <div class="card-footer">
                             <?php 
-                            if($status2==4 and $us_status2==3){
+                            if($status2==4 and $us_status2>0){
                             ?>
                             <form method="post" action="pembahasan.php">
                                 <input type="hidden" name="id" value="<?php echo $id;?>">
                                 <input type="hidden" name="id_paket" value="<?php echo $id_paket2;?>">
-                                <button class="btn button btn-primary btn-block">Lihat Pembahasan</button>
+                                <button class="btn button btn-primary btn-block">Buat Analisis Saya</button>
                             </form>
                             <?php    
-                            }else if($status2==3 and $us_status2==3){ 
+                            }else if($status2==3 and $us_status2>0){ 
                                 ?>
                                 <button class="btn button btn-disabled btn-block">Menunggu Pembahasan</button>
                                 <?php

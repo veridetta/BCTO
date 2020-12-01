@@ -50,7 +50,8 @@ if($_POST){
                         }
                     } 
                     $skoring=score($benar,$salah);
-                    $in=mysqli_query($con, "UPDATE soal set score='$skoring' where id='$nomor[id]'");
+                    $presentase=($benar!=0)?($benar/($benar+$salah))*100:0;
+                    $in=mysqli_query($con, "UPDATE soal set score='$skoring', menjawab_benar='$presentase' where id='$nomor[id]'");
                 }
             }
         }

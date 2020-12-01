@@ -70,7 +70,7 @@ if($_POST){
     }
 }
 // cek status paket soal
-$tp=mysqli_query($con, "select * from paket_soal where status='1'");
+$tp=mysqli_query($con, "select * from paket_soal where status='2'");
 $tps=mysqli_fetch_assoc($tp);
 $hitung=mysqli_num_rows($tp);
 if($hitung<1){
@@ -81,7 +81,7 @@ if($gagal>0){
     header('location:/bcto/home.php');
 }
 //cek paket soal yang aktif
-$ak=mysqli_query($con, "select * from paket_soal where status='1'");
+$ak=mysqli_query($con, "select * from paket_soal where status='2'");
 $aktif=mysqli_fetch_assoc($ak);
 //cek user aktif
 $us=mysqli_query($con, "select * from user_ujian where id_paket='$aktif[id]' and status='1'");
@@ -137,7 +137,7 @@ $sesi=mysqli_fetch_assoc($ses);
     </div>
     <div id="message">
         <div style="padding: 5px;">
-            <div class="alert alert-danger" role="alert">
+            <div class="alert hilang alert-danger" id="pessan" role="alert">
                 Waktu sudah habis, kamu akan dialhikan dalam 3 detik.
             </div>
         </div>
@@ -189,7 +189,7 @@ $sesi=mysqli_fetch_assoc($ses);
             // If the count down is finished, write some text
             if (distance < 0) {
                 clearInterval(x);
-                $("#message").toggleClass('sembunyi');
+                $("#message").toggleClass('hilang');
                 setTimeout(function(){window.location.replace("launch.php"); }, 3000);
                 
             }
@@ -204,12 +204,19 @@ $sesi=mysqli_fetch_assoc($ses);
                 $("#nomor_soal").html(soalke);
             });
             $("#berikutnya").click(function(){
-                if(soalke>totalSoal){
-                   alert('finish');
+                if(soalke==totalSoal){
+                    $.get( "action/finish.php?idd=<?php echo $id;?>&&nomor="+soalke+"&&ujian=<?php echo $user['id'];?>", function( data ) {
+                        if(data){
+                            $("#pessan").html('Kamu akan dialihkan.');
+                            $("#message").toggleClass('hilang');
+                            setTimeout(function(){window.location.replace("launch.php"); }, 1000);
+                        }
+                    });
                 }else if(soalke<=totalSoal){
                     if(soalke==totalSoal-1){
                         $(this).html('Selesai');
                     }
+                    $("#sebelumnya").prop('disabled', false);
                     soalke++;
                     //getsoal
                     $.get( "action/soal.php?idSesi=<?php echo $sesi['id'];?>&&nomor="+soalke+"&&nama=<?php echo $sesi['nama_sesi'];?>", function( data ) {
@@ -220,9 +227,11 @@ $sesi=mysqli_fetch_assoc($ses);
             });
             $("#sebelumnya").prop('disabled', true);
             $("#sebelumnya").click(function(){
-                if(soalke==0){
-                    $(this).prop('disabled', true);
+                if(soalke==1){
+                    $("#sebelumnya").prop('disabled', true);
                 }else{
+                    $("#berikutnya").html('Berikutnya');
+                    $("#sebelumnya").prop('disabled', false);
                     soalke--;
                     //getsoal
                     $.get( "action/soal.php?idSesi=<?php echo $sesi['id'];?>&&nomor="+soalke+"&&nama=<?php echo $sesi['nama_sesi'];?>", function( data ) {

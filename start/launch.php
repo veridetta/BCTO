@@ -27,7 +27,7 @@ if($_SESSION){
      $gagal=1;
 }
 // cek status paket soal
-$tp=mysqli_query($con, "select * from paket_soal where status='1'");
+$tp=mysqli_query($con, "select * from paket_soal where status='2'");
 $tps=mysqli_fetch_assoc($tp);
 $hitung=mysqli_num_rows($tp);
 if($hitung<1){
@@ -193,7 +193,7 @@ if($gagal>0){
                                         <p>Total Soal : <?php echo $hitung_soal;?> Soal
                                             <p>Durasi : <?php echo $tpps['durasi'];?> Menit</p>
                                             <hr>
-                                            <p class="text-center"><span id="sisaw"></span> </p>
+                                            <p class="text-center"><span id="timer"></span> </p>
                                         </div>
                                         <div class="card-footer">
                                             <form method="post" action="start.php" name="mulai" id="mulai">
