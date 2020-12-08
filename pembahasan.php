@@ -97,11 +97,11 @@ if($gagal>0){
             <p class="h4 text-danger"><i class="fa fa-bar-chart"></i> Grafik Nilai</p>
             <hr>
             <div class="col-12 row row-imbang">
-                <div class="col-6">
+                <div class="col-md-6 col-12">
                     <canvas id="bar-chart" width="800" height="600"></canvas>
                     <hr>
                     <p class="h6 text-center">Detail Score TPS<p>
-                    <table class="table table-striped text-center">
+                    <table class="table table-striped text-center table-responsive">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -137,11 +137,11 @@ if($gagal>0){
                         </tbody>
                     </table>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6 col-12 w-100">
                     <canvas id="bar-chart-tka" width="800" height="600"></canvas>
                     <hr>
                     <p class="h6 text-center">Detail Score TKA<p>
-                    <table class="table table-striped text-center">
+                    <table class="table table-striped text-center table-responsive">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -199,8 +199,8 @@ if($gagal>0){
                     for($p=0;$p<3;$p++){
                         $of=$offset[$p];
                         ?>
-                        <div class="col-4">
-                            <table class="table table-striped">
+                        <div class="col-md-4 col-12">
+                            <table class="table table-striped table-responsive">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -245,9 +245,9 @@ if($gagal>0){
 
                 
             ?>
-                <div class="col-4">
+                <div class="col-md-4 col-12">
                     <p class="h5 text-center"><?php echo $ana['nama_sesi'];?></p>
-                    <table class="table table-striped text-center">
+                    <table class="table table-striped text-center table-responsive">
                         <thead>
                             <tr>
                                 <th>No</th>

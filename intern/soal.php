@@ -7,6 +7,7 @@
         include '../config/connect.php';
             $q=mysqli_query($con, "select * from paket_soal order by id desc");
             while($qu=mysqli_fetch_array($q)){
+                $go=mysqli_query($con, "select * from soal where id_paket_soal='$qu[id]'");
         ?>
         <div class="col-12 row row-imbang" data-toggle="collapse" href="#collapse<?php echo $qu['id'];?>">
             <div class="col-6">
@@ -14,7 +15,7 @@
                 <label class="text-muted"><?php echo $qu['keterangan'];?></label>
             </div>
             <div class="col-6 text-right">
-                <p class="h6">120 Soal</p>
+                <p class="h6"><?php echo mysqli_num_rows($go);?> Soal</p>
                 <span class="text-muted"><?php echo $qu['kategori'];?></span>
             </div>
         </div>
@@ -22,15 +23,15 @@
             <table class="table table-striped">
                 <tbody>
                     <?php
-                    $s=mysqli_query($con, "select * from sesi_soal order by id");
+                    $s=mysqli_query($con, "select * from sesi_soal where id_paket_soal='$qu[id]'  order by id desc");
                     while($su=mysqli_fetch_array($s)){
-                        $jum=mysqli_query($con, "select * from soal where id_sesi_soal='$su[id]'");
-                        $jumlah=mysqli_num_rows($jum);
+                        $jum=mysqli_query($con, "select * from soal where id_paket_soal='$qu[id]' and id_sesi_soal='$su[id]'");
+                        $jumlahe=mysqli_num_rows($jum);
                 ?>
                     <tr>
                         <td><?php echo $su['nama_sesi'];?></td>
                         <td><?php echo $su['durasi'];?> Menit</td>
-                        <td><?php echo $jumlah;?> Soal</td>
+                        <td><?php echo $jumlahe;?> Soal</td>
                         <td><button class="btn button btn-primary pilih-sesi" sesi="<?php echo $su['id'];?>" href="sesi" paket="<?php echo $su['id_paket_soal'];?>"><i class="fa fa-edit"></i></button></td>
                     </tr>
                     <?php

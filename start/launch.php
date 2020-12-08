@@ -38,7 +38,7 @@ if($gagal>0){
     header('location:/bcto/home.php');
 }
 ?>
-<div class="col-12 row row-imbang primary" style="margin-top:60px;">
+<div class="col-12 row row-imbang primary" style="background:white;margin-top:60px;">
     <div class="col-12 row row-imbang" style="background-color:white;padding:20px;margin-bottom:12px;">
         <div class="col-12">
             <p class="h4 text-danger"><i class="fa fa-user"></i> Profile</p>
@@ -78,7 +78,7 @@ if($gagal>0){
                     if($hitung_sesi<1){
                         if($notps<1){
                             ?>
-                            <div class="col-3" style="margin-bottom:12px;">
+                            <div class="col-md-3 col-12" style="margin-bottom:12px;">
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-header bg-primary text-white">
@@ -117,7 +117,7 @@ if($gagal>0){
                                 }
                             }
                             ?>
-                            <div class="col-3" style="margin-bottom:12px;">
+                            <div class="col-md-3 col-12" style="margin-bottom:12px;">
                                 <div class="col-12">
                                     <div class="tutup card row" style="width:85%; min-height: 100px;position: absolute;background: black;opacity:0.4;">
                                         <p class="text-center my-auto text-white">Belum</p>
@@ -153,7 +153,7 @@ if($gagal>0){
                                    
                                 }
                                ?>
-                               <div class="col-3" style="margin-bottom:12px;">
+                               <div class="col-md-3 col-12" style="margin-bottom:12px;">
                                     <div class="col-12">
                                         <div class="tutup card row" style="width:85%; min-height: 100%;position: absolute;background: black;opacity:0.4;">
                                             <p class="text-center my-auto text-white">Selesai</p>
@@ -183,7 +183,7 @@ if($gagal>0){
                                 $total_sisa=$menit.":".$detik;
                                 $insert=0;
                                 ?>
-                                <div class="col-3" style="margin-bottom:12px;">
+                                <div class="col-md-3 col-12" style="margin-bottom:12px;">
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-header bg-primary text-white">
@@ -211,7 +211,7 @@ if($gagal>0){
                             }
                         }else if($status_siswa['status']==2){
                             ?>
-                            <div class="col-3" style="margin-bottom:12px;">
+                            <div class="col-md-3 col-12" style="margin-bottom:12px;">
                                 <div class="col-12">
                                     <div class="tutup card row" style="width:85%; min-height: 100%;position: absolute;background: black;opacity:0.4;">
                                         <p class="text-center my-auto text-white">Selesai</p>
@@ -233,7 +233,7 @@ if($gagal>0){
                             <?php
                         }else if($status_siswa['status']==3){
                             ?>
-                            <div class="col-3" style="margin-bottom:12px;">
+                            <div class="col-md-3 col-12" style="margin-bottom:12px;">
                                 <div class="col-12">
                                     <div class="tutup card row" style="width:85%; min-height: 100px;position: absolute;background: black;opacity:0.4;">
                                         <p class="text-center my-auto text-white">Selesai</p>
@@ -255,7 +255,7 @@ if($gagal>0){
                             <?php
                         }else{
                             ?>
-                            <div class="col-3" style="margin-bottom:12px;">
+                            <div class="col-md-3 col-12" style="margin-bottom:12px;">
                                 <div class="col-12">
                                     <div class="tutup card row" style="width:85%; min-height: 100px;position: absolute;background: black;opacity:0.4;">
                                         <p class="text-center my-auto text-white">Belum</p>

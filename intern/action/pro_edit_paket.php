@@ -17,13 +17,13 @@ if($_POST){
                     if($score<21){
                         $nilai=10;
                     }else{
-                        $nilai=7;        
+                        $nilai=8;        
                     }
                 }else{
-                    $nilai=5; 
+                    $nilai=6; 
                 }
             }else{
-                $nilai=2;
+                $nilai=3;
             }
         }else{
             $nilai=0;

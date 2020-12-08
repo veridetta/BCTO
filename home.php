@@ -12,6 +12,8 @@ if($_SESSION){
     $nama=$_SESSION['nama'];
     $id=$_SESSION['id'];
     $ref=$_SESSION['ref'];
+    $nama_d=substr($nama, 0, 1);
+    $nama_depan=$nama_d[0];
     //status riwayat
     //1 topup
     //2 pembelian
@@ -30,15 +32,14 @@ if($_SESSION){
             <div class="col-12">
                 <p class="h4 text-danger"><i class="fa fa-user"></i> Profile</p>
                 <hr>   
+                <p class="text-center"><img class=" text-center rounded-circle" alt="100x100" src="https://place-hold.it/100x100/e74c3c/ecf0f1?text=<?php echo $nama_depan;?>&fontsize=55" data-holder-rendered="true"></p>
+                <p class="text-center h4 text-danger text-capitalize"><?php echo $nama;?></p>
+                <hr>
+                <div class="text-center">
+                    <span class="h4 text-right"><i class="text-warning fa fa-star"></i> <?php echo $saldo;?></span>
+                    <a class="btn btn-outline-warning h4" href="trans/purchase.php">Tambah</a>
+                </div>
             </div>            
-            <div class="col-6">
-                <p class="h4"><?php echo $nama;?></p>
-                <p class="h6">Code Referal : <?php echo $ref;?></p>
-            </div>
-            <div class="col-6 text-right">
-                <span class="h4 text-right"><i class="text-warning fa fa-star"></i> <?php echo $saldo;?></span>
-                <button class="btn btn-outline-warning h4">Tambah</button>
-            </div>
             <hr>
         </div>
         <div class="col-12" style="background-color:white;padding:20px;">
@@ -48,6 +49,7 @@ if($_SESSION){
             <form method="post"  id="form_buy" name="form_buy">
                 <input type="hidden" name="id_paket_soal" id="id_paket_soal" value="">
                 <input type="hidden" name="id_user" id="id_user" value="<?php echo $id;?>">
+                <input type="hidden" name="voucher" id="voucher" value="">
                 <input type="submit" name="sb_buy" id="sb_buy" style="display:none;" value="ada">
             </form>
             <?php 
@@ -87,7 +89,7 @@ if($_SESSION){
                     }
 
             ?>
-                <div class="col-3">
+                <div class="col-md-3 col-11">
                     <div class="card">
                         <div class="card-header">
                             <p class="card-title h4 text-center"><?php echo $nama;?></p>
@@ -108,7 +110,7 @@ if($_SESSION){
                             <?php    
                             }else if($us_status==0){ 
                                 ?>
-                                <button class="btn button btn-primary btn-block btn-buy" id="btn-buy<?php echo $id_paket;?>" paket="<?php echo $id_paket;?>">Daftar (98 <i class="text-warning fa fa-star"></i>)</button>
+                                <button class="btn button btn-primary btn-block" data-toggle="modal" data-target="#buy-modal" id="btn-buy<?php echo $id_paket;?>" paket="<?php echo $id_paket;?>">Daftar (<?php echo $query  ['bintang'];?> <i class="text-warning fa fa-star"></i>)</button>
                                 <?php
                             }else {
                                 ?>
@@ -157,7 +159,7 @@ if($_SESSION){
                     }
 
             ?>
-                <div class="col-3">
+                <div class="col-md-3 col-11 ">
                     <div class="card">
                         <div class="card-header">
                             <p class="card-title h4 text-center"><?php echo $nama2;?></p>
@@ -198,6 +200,41 @@ if($_SESSION){
         </div>
     </div>
     <?php include 'footer.php';?>
+    <!-- The Modal -->
+    <div class="modal" id="buy-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h4 class="modal-title" id="">Konfirmasi Pembelian</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body justify-content-center">
+            <div class='form-check'>
+                <div class="input-group">
+                    <input id="cek" name="cek" type="checkbox" class="form-check-input" placeholder="xx">
+                    <label for="cek" class="form-check-label">Menggunakan Voucher</label>
+                </div>
+            </div>
+            <div class='form-group'>
+                <div class="input-group">
+                    <input id="kode" maxlength="8" name="kode" type="text" class="form-control-lg" placeholder="Voucher">
+                </div>
+            </div>            
+            <span class="text-muted">* Ceklis voucher jika mempunyai kode voucher, abaikan jika langsung membeli dengan bintang.</span>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" id="beli-jadi" class="btn btn-success" data-dismiss="modal">Konfirmasi</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
+        </div>
+    </div>
+    </div>
    <!-- The Modal -->
 <div class="modal" id="myModal">
   <div class="modal-dialog">
@@ -223,8 +260,10 @@ if($_SESSION){
   </div>
 </div>
     <script>
-    $(".btn-buy").click(function(e){
+    $("#beli-jadi").click(function(e){
         var vale = $(this).attr("paket");
+        var vou = $("#kode").val();
+        $("#voucher").val(vou);
         $("#id_paket_soal").val(vale);
         $("#sb_buy").trigger("click");
     })

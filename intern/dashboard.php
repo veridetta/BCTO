@@ -91,17 +91,29 @@ function myStat($v){
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <select name="kategori" class="form-control" id="kategori">
-                                <option value="0">Idle</option>
-                                <option value="1">Terjadwal</option>
-                                <option value="2">Dimulai</option>
-                                <option value="3">Selesai</option>
-                                <option value="4">Pembahasan</option>
-                            </select>
+                    <div class="col-12 row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <select name="kategori" class="form-control" id="kategori">
+                                        <option value="0">Idle</option>
+                                        <option value="1">Terjadwal</option>
+                                        <option value="2">Dimulai</option>
+                                        <option value="3">Selesai</option>
+                                        <option value="4">Pembahasan</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input name="voucher" oninput="this.value = this.value.toUpperCase()" placeholder="Kode Voucher" class="form-control" id="voucher" maxlength="8">
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    
                     <div class="col-12 row">
                         <div class="col-6">
                             <div class="form-group">

@@ -8,7 +8,7 @@
 <body>
     <?php include 'header.php';?>
     <div class="col-12 row tfull justify-content-center" style="padding:20px;">
-        <div class="col-5 col-md-10 col-lg-5 col-sm-11 col-xl-5 col-xs-11 my-auto my-auto">
+        <div class="col-md-5 col-11 my-auto">
             <div class="card">
                 <form method="post" name="signup" id="signup" >
                     <div class="bg-primary card-header">
@@ -67,7 +67,7 @@
                     <div class="card-footer">
                         <input type="submit" class="btn btn-primary btn-block" id="submit" name="submit" value="Daftar">
                         <p></p>
-                        <p class="text-center">Belum punya akun? <a href="#" class="text-primary">Daftar Sekarang</a></p>
+                        <p class="text-center">Sudah punya akun? <a href="login.php" class="text-primary">Login Sekarang</a></p>
                     </div>
                 </form>
             </div>
