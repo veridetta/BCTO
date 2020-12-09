@@ -7,6 +7,7 @@ if($_POST){
     $bintang=mysqli_real_escape_string($con,$_POST['harga']);
     $mulai=mysqli_real_escape_string($con,$_POST['mulai']);
     $akhir=mysqli_real_escape_string($con,$_POST['akhir']);
+    $voucher=mysqli_real_escape_string($con,$_POST['voucher']);
     $keterangan=mysqli_real_escape_string($con,$_POST['keterangan']);
     function score($b,$s){
         $score=($b!=0)?($b/($b+$s))*100:0;
@@ -55,7 +56,7 @@ if($_POST){
                 }
             }
         }
-        $qu=mysqli_query($con, "update paket_soal set status='$status', bintang='$bintang', tgl_mulai='$mulai', tgl_selesai='$akhir', keterangan='$keterangan' where id='$paket_id'");
+        $qu=mysqli_query($con, "update paket_soal set status='$status', bintang='$bintang', tgl_mulai='$mulai', tgl_selesai='$akhir', keterangan='$keterangan', voucher='$voucher' where id='$paket_id'");
         if($qu){
             $pesan = "Berhasil, Soal berhasil dibuat";
             $return_arr['pesan']=$pesan;
