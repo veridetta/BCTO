@@ -144,12 +144,15 @@ if($gagal>0){
                     }).done(function(data) {
                         if(data.success) {
                             info.html(data.pesan).css('color', 'green');
+                            $("#sudah").removeClass('show');
+                            info.removeClass('show');
                             info.addClass('show');
                             //setTimeout(function() {
                             //    window.location.replace("home.php");
                         // }, 1500);
                         } else {
                             info.html(data.pesan).css('color', 'red');
+                            info.removeClass('show');
                             info.addClass('show');
                         }
                     });

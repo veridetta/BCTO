@@ -19,16 +19,18 @@ if($_SESSION){
 }else{
      $gagal=1;
 }
-// cek status paket soal
-$tp=mysqli_query($con, "select * from paket_soal where status='4'");
-$tps=mysqli_fetch_assoc($tp);
-$hitung=mysqli_num_rows($tp);
-if($hitung<1){
-    $gagal=1;
-    echo $hitung;
-}
+
+
 if($_POST){
     $id_paket=mysqli_real_escape_string($con,$_POST['id_paket']);
+    // cek status paket soal
+    $tp=mysqli_query($con, "select * from paket_soal where status='4' and id='$id_paket'");
+    $tps=mysqli_fetch_assoc($tp);
+    $hitung=mysqli_num_rows($tp);
+    if($hitung<1){
+        $gagal=1;
+        echo $hitung;
+    }
     $ce=mysqli_query($con, "select * from nilai_siswa where id_siswa='$id' and id_paket='$id_paket'");
     $hi=mysqli_num_rows($ce);
     if($hi<1){
@@ -49,7 +51,7 @@ if($_POST){
                     $salah++;
                 }
             }
-           $in=mysqli_query($con, "insert into nilai_siswa(id_siswa, id_paket, id_soal, benar, salah, nilai, nama_sesi) values('$id','$id_paket','$soal[id]','$benar','$salah','$nilai','')");
+           $in=mysqli_query($con, "insert into nilai_siswa(id_siswa, id_paket, id_soal, benar, salah, nilai, nama_sesi) values('$id','$id_paket','$soal[id]','$benar','$salah','$nilai','$soal[nama_sesi]')");
            $rank+=$nilai;
             if($in){
                 $nilai=0;
@@ -74,6 +76,14 @@ if($_POST){
     while($nilai=mysqli_fetch_array($nila)){
         $mapel[]=$nilai['nama_sesi'];
         $nilaie[]=$nilai['nilai'];
+    }
+    $nila2=mysqli_query($con, "select n.id_siswa, n.id_paket, n.id_soal, n.benar, n.salah, n.nilai, s.id, s.induk_sesi, s.nama_sesi from nilai_siswa n inner join sesi_soal s on s.id=n.id_soal where n.id_siswa='$id' and n.id_paket='$id_paket' and s.induk_sesi='TKA'");
+    $niq2=mysqli_num_rows($nila2);
+    $mapel2=array();
+    $nilaie2=array();
+    while($nilai2=mysqli_fetch_array($nila2)){
+        $mapel2[]=$nilai2['nama_sesi'];
+        $nilaie2[]=$nilai2['nilai'];
     }
 }else{
     $gagal=1;
@@ -152,21 +162,27 @@ if($gagal>0){
                             </tr>
                         </thead>
                         <tbody>
-                        <?php for($o=1;$o<5;$o++){
+                        <?php 
+                        $nod2=1;
+                        $detail_nilai2=0;
+                        $nilax2=mysqli_query($con, "select n.id_siswa, n.id_paket, n.id_soal, n.benar, n.salah, n.nilai, s.id, s.induk_sesi, s.nama_sesi from nilai_siswa n inner join sesi_soal s on s.id=n.id_soal where n.id_siswa='$id' and n.id_paket='$id_paket' and s.induk_sesi='TKA'");
+                        while($detail2=mysqli_fetch_array($nilax2)){
                             ?>
                             <tr>
-                                <td class="text-center"><?php echo $o;?></td>
-                                <td class="text-left">Matematika</td>
-                                <td class="bg-success text-center text-white">3</td>
-                                <td class="bg-warning text-center">5</td>
-                                <td class="text-center">130</td>
+                                <td class="text-center"><?php echo $nod2;?></td>
+                                <td class="text-left"><?php echo $detail2['nama_sesi'];?></td>
+                                <td class="bg-success text-center text-white"><?php echo $detail2['benar'];?></td>
+                                <td class="bg-warning text-center"><?php echo $detail2['salah'];?></td>
+                                <td class="text-center"><?php echo $detail2['nilai'];?></td>
                             </tr>
                             <?php
+                            $detail_nilai2+=$detail2['nilai'];
+                            $nod2++;
                         }
                             ?>
                             <tr>
                                 <td colspan="4" class="font-weight-bold">Total SCORE TKA</td>
-                                <td class="font-weight-bold">520</td>
+                                <td class="font-weight-bold"><?php echo $detail_nilai2;?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -180,9 +196,9 @@ if($gagal>0){
         <hr>
         <?php
                 //$my=mysqli_query($con, "SELECT COUNT(*) as tot_ni FROM peringkat WHERE id <= '$id' order by nilai desc");
-                $my=mysqli_query($con, "SELECT ps FROM ( select @rownum:=@rownum+1 ps, p.* from peringkat p, (SELECT @rownum:=0) r order by nilai desc) s WHERE id_siswa = '15'");
+                $my=mysqli_query($con, "SELECT ps FROM ( select @rownum:=@rownum+1 ps, p.* from peringkat p, (SELECT @rownum:=0) r where id_paket='$id_paket' order by nilai desc) s WHERE id_siswa = '$id' and id_paket='$id_paket'");
                 $myr=mysqli_fetch_assoc($my);
-                $sco=mysqli_query($con, "select * from peringkat where id_siswa='$id'");
+                $sco=mysqli_query($con, "select * from peringkat where id_siswa='$id' and id_paket='$id_paket'");
                 $myscore=mysqli_fetch_assoc($sco);
             ?>
             <p class="h3 text-warning text-center">YOUR RANK</p>
@@ -311,7 +327,7 @@ if($gagal>0){
                 {
                 label: "Score",
                 backgroundColor: ["#f1c40f", "#3498db","#34495e","#2ecc71"],
-                data: <?php echo json_encode($nilaie); ?>
+                data: <?php echo json_encode($nilaie2); ?>
                 }
             ]
             },

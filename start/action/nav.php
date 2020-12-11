@@ -12,6 +12,7 @@ if($_GET){
             $jawaban=$q['jawabanSiswa'];
         ?>
             <button style="margin-left:10px; margin-top:10px;min-width:44px;" class="btn btn-nav <?php if(empty($jawaban)){echo 'btn-outline-warning';}else{echo 'btn-success';};?>" idSoal="<?php echo $id_soal;?>"><?php echo $nosoal;?></button>
+            <input type="hidden" id="nosoalupdate" value="1">
         <?php
         }
         ?>
@@ -19,6 +20,7 @@ if($_GET){
             $(".btn-nav").click(function(){
                 var sesi=<?php echo $sesi_id;?>;
                 var nosoal=$(this).html();
+                $("#nosoalupdate").val($(this).html());
                 $.get( "action/soal.php?idSesi="+sesi+"&&nomor="+nosoal+"&&nama=<?php echo $nama_sesi;?>", function( data ) {
                         $( "#soal" ).html( data );
                         $("#nomor_soal").html(nosoal);

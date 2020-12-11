@@ -20,7 +20,7 @@
         if($hvoucher>7){
             $v=mysqli_query($con, "select * from paket_soal where id='$id_paket' and voucher='$voucher'");
             if(mysqli_num_rows($v)>0){
-                $sisa=$hitung-0;
+                $sisa=$saldo-0;
                 $be=mysqli_query($con, "insert into riwayat_bintang (id_users, nominal, status, saldo) values('$id_user','0','2','$sisa')");
                 if($be){
                     //status user :

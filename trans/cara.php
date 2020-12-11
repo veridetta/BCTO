@@ -102,10 +102,20 @@ if($gagal>0){
     <div class="col-12 " style="background-color:white;padding:20px;margin-bottom:12px;margin-top:12px;">
         <div class="col-12" id="tatacara">
             <div class="card">
-                <p class="h2 text-center" style="margin-top:12px;"><span class="badge badge-secondary" style="white-space:normal">Dibuat : <?php echo format_hari_tanggal(date("Y-m-d", $timestamp));;?> Pukul <?php echo date("H:i", $timestamp);?> (1x24jam)</span></p>
+                <p class="h2 text-center" style="margin-top:12px;"><span class="badge badge-secondary" style="white-space:normal">Dibuat : <?php echo format_hari_tanggal(date("Y-m-d", $timestamp));?> Pukul <?php echo date("H:i", $timestamp);?> (2x24jam)</span></p>
                 <p class="display-3 text-center"><span class="badge badge-warning">Rp. <?php echo number_format($tagihan['tagihan'],2,",",".");?></span></p>
                 <p class="text-center">Silahkan lakukan transfer ke nomor berikut:</p>
-                <p class="h2 text-center"><span class="">No Briva : 1266<?php echo $tagihan['va'];?></span></p>
+                <p class="h2 text-center"><span class="">No Briva : 12666<?php echo $tagihan['va'];?></span></p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-10" style="margin-bottom:12px;">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="h5"><span class="badge badge-info"><i class="fa fa-info"></i> <strong>Transfer dengan nominal yang sesuai</strong></span></p>
+                                <small class="text-muted">Perpedaan nominal transfer akan membuat transaksi tidak dapat di proses</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
             </div>
         </div>
@@ -218,3 +228,27 @@ if($gagal>0){
         </ol>
     </div>
 </div>
+<script>
+/*$(document).keypress(function(event) {
+    switch(event.charCode) {
+        case 69:
+            alert("E");
+            break;
+        case 65:
+            alert("A");
+            break;
+        case 66:
+            alert("B");
+            break;
+        case 67:
+            alert("C");
+            break;
+        case 68:
+            alert("D");
+            break;
+        default:
+            // code block
+    }
+      //alert('Handler for .keypress() called. - ' + event.charCode);
+});*/
+</script>

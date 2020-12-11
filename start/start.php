@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body style="background-color:#f8f8f8">
+<body style="background:white">
 <?php include '../header.php';?>
 <style>
 #message {
@@ -84,7 +84,7 @@ if($gagal>0){
 $ak=mysqli_query($con, "select * from paket_soal where status='2'");
 $aktif=mysqli_fetch_assoc($ak);
 //cek user aktif
-$us=mysqli_query($con, "select * from user_ujian where id_paket='$aktif[id]' and status='1'");
+$us=mysqli_query($con, "select * from user_ujian where id_paket='$aktif[id]' and id_siswa='$id' and status='1'");
 $user=mysqli_fetch_assoc($us);
 //waktu ujian
 $skrg = new DateTime(date('Y/m/d H:i:s'));
@@ -209,7 +209,7 @@ $sesi=mysqli_fetch_assoc($ses);
                         if(data){
                             $("#pessan").html('Kamu akan dialihkan.');
                             $("#message").toggleClass('hilang');
-                            setTimeout(function(){window.location.replace("launch.php"); }, 1000);
+                            setTimeout(function(){window.location.replace("launch.php?lanjut=1"); }, 1000);
                         }
                     });
                 }else if(soalke<=totalSoal){
@@ -217,6 +217,7 @@ $sesi=mysqli_fetch_assoc($ses);
                         $(this).html('Selesai');
                     }
                     $("#sebelumnya").prop('disabled', false);
+                    soalke=$('#nosoalupdate').val();
                     soalke++;
                     //getsoal
                     $.get( "action/soal.php?idSesi=<?php echo $sesi['id'];?>&&nomor="+soalke+"&&nama=<?php echo $sesi['nama_sesi'];?>", function( data ) {
@@ -232,6 +233,7 @@ $sesi=mysqli_fetch_assoc($ses);
                 }else{
                     $("#berikutnya").html('Berikutnya');
                     $("#sebelumnya").prop('disabled', false);
+                    soalke=$('#nosoalupdate').val();
                     soalke--;
                     //getsoal
                     $.get( "action/soal.php?idSesi=<?php echo $sesi['id'];?>&&nomor="+soalke+"&&nama=<?php echo $sesi['nama_sesi'];?>", function( data ) {

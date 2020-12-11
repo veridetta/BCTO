@@ -111,6 +111,49 @@ if($_POST){
             $datax['expiredDate']=$jsonPost['data']['expiredDate'];
             return $datax;
     }
+    function BrivaUpdate($client_id,$secret_id,$token, $id_siswa, $jenis, $verb){
+        $timestamp = gmdate("Y-m-d\TH:i:s.000\Z");
+        $secret = $secret_id;
+        $institutionCode = "H9BZ27953CN";
+        $brivaNo = "12666";
+        $d_user=sprintf('%04d', $id_siswa);
+        $d_jenis=sprintf('%04d', $jenis);
+        $custCode = "02".$d_user.$d_jenis;
+        $statusBayar = "N";
+        $datas = array('institutionCode' => $institutionCode ,
+        'brivaNo' => $brivaNo,
+        'custCode' => $custCode,
+        'statusBayar'=> $statusBayar);
+
+            $payload = json_encode($datas, true);
+            $path = "/v1/briva/status";
+            $verb = $verb;
+            //genertae signature
+            $base64sign = BRIVAgenerateSignature($path,$verb,$token,$timestamp,$payload,$secret);
+            $request_headers = array(
+                                "Content-Type:"."application/json",
+                                "Authorization:Bearer " . $token,
+                                "BRI-Timestamp:" . $timestamp,
+                                "BRI-Signature:" . $base64sign,
+                            );
+
+            $urlPost ="https://partner.api.bri.co.id/v1/briva/status";
+            $chPost = curl_init();
+            curl_setopt($chPost, CURLOPT_URL,$urlPost);
+            curl_setopt($chPost, CURLOPT_HTTPHEADER, $request_headers);
+            curl_setopt($chPost, CURLOPT_CUSTOMREQUEST, "PUT"); 
+            curl_setopt($chPost, CURLOPT_POSTFIELDS, $payload);
+            curl_setopt($chPost, CURLINFO_HEADER_OUT, true);
+            curl_setopt($chPost, CURLOPT_RETURNTRANSFER, true);
+            $resultPost = curl_exec($chPost);
+            $httpCodePost = curl_getinfo($chPost, CURLINFO_HTTP_CODE);
+            curl_close($chPost);
+
+            $jsonPost = json_decode($resultPost, true);
+
+            //echo "<br/> <br/>";
+            //echo "Response Post : ".$resultPost;
+    }
     $clientid="xanuXo0i6auDxRKmVa5NF8EDYfmUERei";
     $clientsecret="WqASWC9i23UVQMeI";
     $se=mysqli_query($con, "select * from briapi where expires>=NOW()");
@@ -142,6 +185,7 @@ if($_POST){
         if($us['tagihan']==$nominal){
             $amount=$us['tagihan'];
         }else{
+            $update=BrivaUpdate($clientid,$clientsecret,$token,$id,'1',"PUT");
             $briva=BrivaCreate($clientid,$clientsecret,$token,$nama,$id,'1','Pembelian Bintang',$nominal,'PUT');
             $amount=$briva['amount'];
             $last=$briva['expiredDate'];
@@ -158,7 +202,7 @@ if($_POST){
         $ket=$briva['keterangan'];
         $inp=mysqli_query($con, "insert into tagihan (id_siswa, va, dibuat, tagihan, expires, status, keterangan)values('$id','$briva[custCode]','$dibuat','$briva[amount]','$briva[expiredDate]','1','$briva[keterangan]')");
     }
-        $return_arr['pesan']="<strong>Info!</strong> Pembayaran sebesar $nom berhasil dibuat. lihat cara pembayaran <a href='cara.php' class='text-danger'>disini</a>";
+        $return_arr['pesan']="<strong>Info!</strong> Pembayaran sebesar <strong>$nom</strong> berhasil dibuat. lihat cara pembayaran <a href='cara.php' class='text-danger'>disini</a>";
         $return_arr['token']=$token;
         $return_arr['va']=$va;
         $return_arr['tagihan']=$amount;
